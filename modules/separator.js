@@ -26,6 +26,7 @@ module.exports = async (ctx) => {
       await bot.telegram.sendVideo(process.env.MEDIA_CHANNEL, url, {
         caption: `Надіслано - ${username} \nпосилання - [клац](${text})`,
         disable_notification: true,
+        parse_mode: "Markdown",
       });
     } else
       await bot.telegram.sendVideo(ctx.chat.id, url, {
