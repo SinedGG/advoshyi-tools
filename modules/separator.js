@@ -5,10 +5,6 @@ const { add: addScore } = require(`../models/leaderboard`);
 
 module.exports = async (ctx) => {
   try {
-    console.log(
-      `Request from ${ctx.from.username} (${ctx.from.id}) - ${ctx.message.text} `
-    );
-
     const startTime = performance.now();
 
     const text = ctx.message.text;
@@ -19,6 +15,10 @@ module.exports = async (ctx) => {
     if (text.includes(`instagram.com/reel`)) url = await insta(text);
 
     if (!url) return;
+
+    console.log(
+      `Request from ${ctx.from.username} (${ctx.from.id}) - ${ctx.message.text} `
+    );
 
     if (
       ctx.chat.id == process.env.MAIN_CHANNEL ||
