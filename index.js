@@ -10,3 +10,4 @@ bot.on("text", (ctx) => {
 });
 
 bot.launch();
+console.log("Advoshyi-tools is running!");
