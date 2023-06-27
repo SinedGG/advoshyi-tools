@@ -1,10 +1,16 @@
-const wait = require("node:timers/promises").setTimeout;
-
 const tiktok = require(`./link/tik-tok`);
 const insta = require(`./link/insta`);
 
+const { add: addScore } = require(`../models/leaderboard`);
+
 module.exports = async (ctx) => {
   try {
+    console.log(
+      `Request from ${ctx.from.username} (${ctx.from.id}) - ${ctx.message.text} `
+    );
+
+    const startTime = performance.now();
+
     const text = ctx.message.text;
 
     var url;
@@ -13,8 +19,6 @@ module.exports = async (ctx) => {
     if (text.includes(`instagram.com/reel`)) url = await insta(text);
 
     if (!url) return;
-
-    await wait(500);
 
     if (
       ctx.chat.id == process.env.MAIN_CHANNEL ||
@@ -28,12 +32,27 @@ module.exports = async (ctx) => {
         disable_notification: true,
         parse_mode: "Markdown",
       });
+      addScore(ctx.from.id);
     } else
       await bot.telegram.sendVideo(ctx.chat.id, url, {
         reply_to_message_id: ctx.message.message_id,
         disable_notification: true,
       });
+
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    console.log(`Execution time: ${formatTime(executionTime)}`);
   } catch (error) {
     console.log(error);
   }
 };
+
+function formatTime(milliseconds) {
+  if (milliseconds < 1000) {
+    return milliseconds + " ms";
+  } else if (milliseconds < 60000) {
+    return (milliseconds / 1000).toFixed(2) + " seconds";
+  } else {
+    return (milliseconds / 60000).toFixed(2) + " minutes";
+  }
+}
