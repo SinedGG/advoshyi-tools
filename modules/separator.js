@@ -1,5 +1,3 @@
-const wait = require("node:timers/promises").setTimeout;
-
 const tiktok = require(`./link/tik-tok`);
 const insta = require(`./link/insta`);
 
@@ -13,8 +11,6 @@ module.exports = async (ctx) => {
     if (text.includes(`instagram.com/reel`)) url = await insta(text);
 
     if (!url) return;
-
-    await wait(500);
 
     if (
       ctx.chat.id == process.env.MAIN_CHANNEL ||
