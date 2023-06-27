@@ -3,6 +3,11 @@ const insta = require(`./link/insta`);
 
 module.exports = async (ctx) => {
   try {
+    console.log(
+      `Request from ${ctx.chat.username} (${ctx.chat.id}) - ${ctx.message.text} `
+    );
+    const startTime = performance.now();
+
     const text = ctx.message.text;
 
     var url;
@@ -29,7 +34,20 @@ module.exports = async (ctx) => {
         reply_to_message_id: ctx.message.message_id,
         disable_notification: true,
       });
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    console.log(`Execution time: ${formatTime(executionTime)}`);
   } catch (error) {
     console.log(error);
   }
 };
+
+function formatTime(milliseconds) {
+  if (milliseconds < 1000) {
+    return milliseconds + " ms";
+  } else if (milliseconds < 60000) {
+    return (milliseconds / 1000).toFixed(2) + " seconds";
+  } else {
+    return (milliseconds / 60000).toFixed(2) + " minutes";
+  }
+}
