@@ -6,7 +6,7 @@ module.exports = (url) => {
       var response = await axios.post(
         `https://downloader.bot/api/tiktok/info`,
         {
-          url: "https://vm.tiktok.com/ZMjdbNseQ/",
+          url,
         }
       );
 
